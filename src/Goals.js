@@ -1,4 +1,4 @@
-import React, {useState , useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { styled } from '@mui/material/styles';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
@@ -7,13 +7,29 @@ import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { db } from "./firebase";
 import {
-  collection,
-  getDocs,
-  addDoc,
-  updateDoc,
-  deleteDoc,
-  doc,
+    collection,
+    getDocs,
+    addDoc,
+    updateDoc,
+    deleteDoc,
+    doc,
 } from "firebase/firestore";
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import Modal from '@mui/material/Modal';
+
+const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+};
+
 
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -27,10 +43,13 @@ const Item = styled(Paper)(({ theme }) => ({
 
 
 const Goals = () => {
+    const [open, setOpen] = React.useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
 
     const [newName, setNewName] = useState("");
     const [newAge, setNewAge] = useState(0);
-  
+
     const [users, setUsers] = useState([]);
     const [curret, setCurrent] = useState([]);
     const [Goals, setGoals] = useState([]);
@@ -44,43 +63,42 @@ const Goals = () => {
         const userDoc = doc(db, "users", id);
         const newFields = { age: age + 1 };
         await updateDoc(userDoc, newFields);
-      };
-    
-      const deleteUser = async (id) => {
+    };
+
+    const deleteUser = async (id) => {
         const userDoc = doc(db, "users", id);
         await deleteDoc(userDoc);
-      };
+    };
 
 
     const createUser = async () => {
-      await addDoc(usersCollectionRef, { name: newName, age: Number(newAge) });
+        await addDoc(usersCollectionRef, { name: newName, age: Number(newAge) });
     };
-  
-    
-  
-    useEffect(() => {
-      const getUsers = async () => {
-        const data = await getDocs(usersCollectionRef);
-        const data2 = await getDocs(usersGoalsCollectionRef);
-        const data3 = await getDocs(usersTargetCollectionRef);
-        setUsers(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-        data2.forEach((doc) => {
-            setGoals(doc.data());
-        });
-        data3.forEach((doc) => {
-            setCurrent(doc.data());
-        });
-      };
 
-      getUsers();
+
+
+    useEffect(() => {
+        const getUsers = async () => {
+            const data = await getDocs(usersCollectionRef);
+            const data2 = await getDocs(usersGoalsCollectionRef);
+            const data3 = await getDocs(usersTargetCollectionRef);
+            setUsers(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+            data2.forEach((doc) => {
+                setGoals(doc.data());
+            });
+            data3.forEach((doc) => {
+                setCurrent(doc.data());
+            });
+        };
+
+        getUsers();
     }, []);
 
-    console.log(Goals)
-    console.log(curret)
-
-
-
-    const percentage = 66;
+   
+    let displayWeight = Math.round(100 * Goals.BodyWeight/ curret.BodyWeight ) 
+    let displayBench = Math.round(100 *  curret.Bench / Goals.Bench) 
+    let displaySquat = Math.round(100 *  curret.Squat / Goals.Squat ) 
+    let displayDeadLift = Math.round(100 *  curret.DeadLift/ Goals.Deadlift ) 
 
 
     return (
@@ -89,29 +107,49 @@ const Goals = () => {
                 <Grid item xs={6}>
                     <Item>
 
-                    <CircularProgressbar value={percentage} text={`${percentage}%`} />;
+                        <CircularProgressbar value={displayWeight} text={`${displayWeight}%`} />
                     </Item>
                 </Grid>
                 <Grid item xs={6}>
                     <Item>
 
-                    <CircularProgressbar value={percentage} text={`${percentage}%`} />;
+                        <CircularProgressbar value={displayBench} text={`${displayBench}%`} />
                     </Item>
                 </Grid>
                 <Grid item xs={6}>
                     <Item>
 
-                    <CircularProgressbar value={percentage} text={`${percentage}%`} />;
+                        <CircularProgressbar value={displaySquat} text={`${displaySquat}%`} />
                     </Item>
                 </Grid>
                 <Grid item xs={6}>
                     <Item>
 
-                    <CircularProgressbar value={percentage} text={`${percentage}%`} />;
+                        <CircularProgressbar value={displayDeadLift} text={`${displayDeadLift}%`} />
                     </Item>
                 </Grid>
             </Grid>
-        </Box>);
+
+            <Button onClick={handleOpen}>Open modal</Button>
+            <Modal
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={style}>
+                    <Typography id="modal-modal-title" variant="h6" component="h2">
+                        Text in a modal
+                    </Typography>
+                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                        Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+                    </Typography>
+                </Box>
+            </Modal>
+        </Box>
+
+
+    );
 }
 
 export default Goals;
