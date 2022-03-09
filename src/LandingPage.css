@@ -1,0 +1,10 @@
+.MainContent{
+
+    overflow: auto;
+    padding: 0px !important;
+}
+
+.Image{
+    height: 300px;
+    filter: brightness(50%);
+}

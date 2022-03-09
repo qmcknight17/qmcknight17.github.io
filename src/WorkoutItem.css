@@ -1,0 +1,13 @@
+.Item{
+    display: flex;
+    flex-direction: row;
+    padding: 16px;
+    width: 100%;
+    justify-content: space-between;
+    
+}
+
+
+.Item span{
+   
+}
