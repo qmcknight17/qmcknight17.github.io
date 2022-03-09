@@ -47,9 +47,10 @@ const Navigation = () => {
               'aria-labelledby': 'basic-button',
             }}
           >
-            <MenuItem onClick={handleClose}><span onClick={()=> navigate('/')}>Home</span></MenuItem>
-            <MenuItem onClick={handleClose}><span onClick={()=> navigate('/Active')}>Active Workout</span></MenuItem>
-            <MenuItem onClick={handleClose}><span onClick={() => navigate('/Blog')} >WorkoutBlog</span></MenuItem>
+            <MenuItem onClick={handleClose}><span onClick={()=> navigate('/Home/Landing')}>Home</span></MenuItem>
+            <MenuItem onClick={handleClose}><span onClick={()=> navigate('/Home/Active')}>Active Workout</span></MenuItem>
+            <MenuItem onClick={handleClose}><span onClick={() => navigate('/Home/Goals')} >Goals</span></MenuItem>
+            <MenuItem onClick={handleClose}><span onClick={() => navigate('/Home/Blog')} >Blog</span></MenuItem>
             <MenuItem onClick={handleClose}>Logout</MenuItem>
           </Menu>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>

@@ -8,6 +8,7 @@ import Login from './Login';
 import { UserAuthContextProvider } from './UserAuthContext';
 import SignUp from './SignUp';
 import Layout from './Layout';
+import Goals from './Goals';
 
 function App() {
   return (
@@ -21,6 +22,8 @@ function App() {
           </Route>
           <Route exact path="/Home" element={<Layout />}>
           <Route exact path="Landing" element={<LandingPage />}>
+          </Route>
+          <Route exact path="Goals" element={<Goals />}>
           </Route>
           <Route exact path="Blog" element={<StandardList />}>
           </Route>
