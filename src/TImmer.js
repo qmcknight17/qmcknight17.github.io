@@ -5,6 +5,7 @@ const Timmer = (props) => (
   <CountdownCircleTimer
   
     isPlaying={props.play}
+    size={250}
     duration={props.duration}
     colors={['#004777', '#F7B801', '#A30000', '#A30000']}
     colorsTime={[7, 5, 2, 0]}

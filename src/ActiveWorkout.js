@@ -35,14 +35,11 @@ const ActiveWorkout = () => {
     const [key, setKey] = useState(0);
     return (
 
-        <div className='Content'>
+      
             <div className='Time'>
                 <Card
                     className='MainContent'
-                    sx={{
-                        maxWidth: 505,
-                        height: "50rem"
-                    }}>
+                   >
 
                     <div className="Timmer">
                         <Timmer key={key} play={playing} duration={duration} /></div>
@@ -55,7 +52,10 @@ const ActiveWorkout = () => {
                             Start Workout
                         </Typography>
                     </CardContent>
-                    <CardActions>
+                    <CardActions
+                    className='btnGroup'
+                    >
+
                         <Button
                             className='Button'
                             size="large"
@@ -81,7 +81,7 @@ const ActiveWorkout = () => {
                     </div>
                 </Card>
             </div>
-        </div>
+        
     );
 }
 

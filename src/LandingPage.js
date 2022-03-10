@@ -37,7 +37,7 @@ const LandingPage = (props) => {
                             />
                             <div
 
-                                onClick={() => navigate('/Active')}
+                                onClick={() => navigate('/Home/Active')}
                                 style={{
                                     position: 'absolute',
                                     color: 'white',
@@ -60,7 +60,7 @@ const LandingPage = (props) => {
                                 image="https://images.unsplash.com/photo-1574680096145-d05b474e2155?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mzd8fGd5bXxlbnwwfHwwfHw%3D&w=1000&q=80"
                             />
                             <div 
-                            onClick={() => navigate('/Blog')}
+                            onClick={() => navigate('/Home/Blog')}
                             style={{
                                 position: 'absolute',
                                 color: 'white',
@@ -83,6 +83,7 @@ const LandingPage = (props) => {
                                 image="https://media.istockphoto.com/photos/black-and-white-photo-of-old-dumbbells-picture-id470740114?k=20&m=470740114&s=612x612&w=0&h=bSmQ_MPhs2Ga_Gnr88w9Jexoh5-nYFZ2Py0EosOCUkE="
                             />
                             <div
+                             onClick={() => navigate('/Home/Goals')}
 
                                 style={{
                                     position: 'absolute',
@@ -92,7 +93,7 @@ const LandingPage = (props) => {
                                     fontSize: '30px',
 
                                     transform: 'translateX(-50%)'
-                                }}>Articles</div>
+                                }}>Goals</div>
                         </div>
                     </CardContent>
                 </div>
