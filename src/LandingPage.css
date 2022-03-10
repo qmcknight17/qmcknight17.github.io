@@ -1,8 +1,9 @@
 .MainContent{
 
     overflow: scroll;
-    height: 90vh;
+    height: 86vh !important;
     padding: 0px !important;
+
 }
 
 .Image{

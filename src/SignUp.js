@@ -4,22 +4,40 @@ import { Link, useNavigate } from "react-router-dom";
 import { TextField } from '@mui/material';
 import { Button } from '@mui/material';
 import { useUserAuth } from "./UserAuthContext";
+import { db } from "./firebase";
+import {
+    collection,
+    getDocs,
+    addDoc,
+    updateDoc,
+    deleteDoc,
+    doc,
+} from "firebase/firestore";
 import "./Login.css"
 
 const SignUp = () => {
-    const [details, setDetails] = useState({ email: "", password: "" });
+    const [details, setDetails] = useState({name: "", email: "", password: "" });
 
 
     const [error, setError] = useState("");
     const { signUp } = useUserAuth();
     const navigate = useNavigate();
 
+    const usersCollectionRef = collection(db, "Users");
+    const createUser = async () => {
+        await addDoc(usersCollectionRef, { name: details.name, email: details.email });
+    };
+
+
+
     const submitHandler = async (e) => {
         e.preventDefault();
         setError("");
         try {
             await signUp(details.email, details.password);
-            navigate("/Login");
+            createUser();
+            console.log(details)
+            navigate("/");
         } catch (err) {
             setError(err.message);
         }
@@ -29,6 +47,17 @@ const SignUp = () => {
             <div className="form-inner">
                 <h2>Sign Up</h2>
                 {(error != "") ? (<div className="error">{error}</div>) : ""}
+
+                <div className="form-group">
+                    <TextField
+                        className='LoginInput'
+                        id="filled-basic"
+                        label="Name"
+                        onChange={e => setDetails({ ...details, name: e.target.value })}
+                        value={details.name}
+                    />
+                </div>
+
                 <div className="form-group">
                     <TextField
                         className='LoginInput'

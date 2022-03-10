@@ -1,0 +1,5 @@
+.GoalContent{
+    height: 85vh;
+    display: flex;
+    flex-direction: column;
+}

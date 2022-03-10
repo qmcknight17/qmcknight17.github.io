@@ -3,9 +3,13 @@ import { styled } from '@mui/material/styles';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
+import { TextField } from '@mui/material';
+import { useUserAuth } from "./UserAuthContext";
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
+import "./Goals.css"
 import { db } from "./firebase";
+
 import {
     collection,
     getDocs,
@@ -43,32 +47,35 @@ const Item = styled(Paper)(({ theme }) => ({
 
 
 const Goals = () => {
+
+    const { user } = useUserAuth();
+
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
-    const [newName, setNewName] = useState("");
-    const [newAge, setNewAge] = useState(0);
 
     const [users, setUsers] = useState([]);
-    const [curret, setCurrent] = useState([]);
-    const [Goals, setGoals] = useState([]);
+    const [curret, setCurrent] =  useState({BodyWeight: "", Bench: "", Squat: "" , DeadLift: ""});
+    const [Goals, setGoals] =  useState({BodyWeight: "", Bench: "", Squat: "" , DeadLift: ""});
 
     const usersCollectionRef = collection(db, "Users");
     const usersGoalsCollectionRef = collection(db, "Users/User1/Goals");
     const usersTargetCollectionRef = collection(db, "Users/User1/Current");
 
-    const updateCurrent = async (Bench) => {
+    const updateGoals = async () => {
         const userDoc = doc(db, "Users/User1/Goals/Goals1");
         console.log(userDoc)
-        const newFields = { Bench: 235 + 1 };
+        const newFields = {BodyWeight: Goals.BodyWeight, Bench: Goals.Bench, Squat: Goals.Squat, DeadLift: Goals.DeadLift};
         await updateDoc(userDoc, newFields);
     };
 
-    const updateGoals = async (Bench) => {
+    const updateCurrent = async () => {
         const userDoc = doc(db, "Users/User1/Current/Current1");
         console.log(userDoc)
-        const newFields = { Bench: 235 + 1 };
+        console.log(curret)
+        console.log(Goals)
+        const newFields = {BodyWeight: curret.BodyWeight, Bench: curret.Bench, Squat: curret.Squat, DeadLift: curret.DeadLift};
         await updateDoc(userDoc, newFields);
     };
 
@@ -78,9 +85,7 @@ const Goals = () => {
     };
 
 
-    const createUser = async () => {
-        await addDoc(usersCollectionRef, { name: newName, age: Number(newAge) });
-    };
+
 
     useEffect(() => {
         const getUsers = async () => {
@@ -99,18 +104,26 @@ const Goals = () => {
         getUsers();
     }, []);
 
-
+    const submitHandler = async (e) => {
+        e.preventDefault();
+      
+        updateCurrent();
+        updateGoals();
+        
+    };
 
 
     let displayWeight = Math.round(100 * Goals.BodyWeight / curret.BodyWeight)
     let displayBench = Math.round(100 * curret.Bench / Goals.Bench)
     let displaySquat = Math.round(100 * curret.Squat / Goals.Squat)
-    let displayDeadLift = Math.round(100 * curret.DeadLift / Goals.Deadlift)
+    let displayDeadLift = Math.round(100 * curret.DeadLift / Goals.DeadLift)
 
-  
+
     return (
-        <Box sx={{ width: '100%' }}>
-            <h1>Welcome Back {(users[0]?? {Name : ''}).Name}</h1>
+        <Box
+            className='GoalContent'
+        >
+            <h1>Welcome Back {(users[1] ?? { name: '' }).name}</h1>
             <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
                 <Grid item xs={6}>
                     <Item>
@@ -120,19 +133,19 @@ const Goals = () => {
                 </Grid>
                 <Grid item xs={6}>
                     <Item>
-                    <h2>Bench</h2>
+                        <h2>Bench</h2>
                         <CircularProgressbar value={displayBench} text={`${displayBench}%`} />
                     </Item>
                 </Grid>
                 <Grid item xs={6}>
                     <Item>
-                    <h2>Squat</h2>
+                        <h2>Squat</h2>
                         <CircularProgressbar value={displaySquat} text={`${displaySquat}%`} />
                     </Item>
                 </Grid>
                 <Grid item xs={6}>
                     <Item>
-                    <h2>Deadlift</h2>
+                        <h2>Deadlift</h2>
                         <CircularProgressbar value={displayDeadLift} text={`${displayDeadLift}%`} />
                     </Item>
                 </Grid>
@@ -145,14 +158,104 @@ const Goals = () => {
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
+                <form onSubmit={submitHandler}>
                 <Box sx={style}>
-                    <Typography id="modal-modal-title" variant="h6" component="h2">
-                        Text in a modal
-                    </Typography>
-                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                        Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-                    </Typography>
+                    <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+                        <Grid item xs={6}>
+                            <Item>
+                                <TextField
+                                    className=''
+                                    id="filled-basic"
+                                    label="Current Body Weight"
+                                    onChange={e => setCurrent({ ...curret, BodyWeight: e.target.value })}
+                                    value={curret.BodyWeight}
+                                />
+                            </Item>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <Item>
+                            <TextField
+                                    className=''
+                                    id="filled-basic"
+                                    label="Goal Body Weight"
+                                    onChange={e => setGoals({ ...Goals, BodyWeight: e.target.value })}
+                                    value={Goals.BodyWeight}
+                                />
+                            </Item>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <Item>
+                                <TextField
+                                    className=''
+                                    id="filled-basic"
+                                    label="Current Bench"
+                                    onChange={e => setCurrent({ ...curret, Bench: e.target.value })}
+                                    value={curret.Bench}
+                                />
+                            </Item>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <Item>
+                            <TextField
+                                    className=''
+                                    id="filled-basic"
+                                    label="Goal Bench"
+                                    onChange={e => setGoals({ ...Goals, Bench: e.target.value })}
+                                    value={Goals.Bench}
+                                />
+                            </Item>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <Item>
+                                <TextField
+                                    className=''
+                                    id="filled-basic"
+                                    label="Current Squat"
+                                    onChange={e => setCurrent({ ...curret, Squat: e.target.value })}
+                                    value={curret.Squat}
+                                />
+                            </Item>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <Item>
+                            <TextField
+                                    className=''
+                                    id="filled-basic"
+                                    label="Goal Squat"
+                                    onChange={e => setGoals({ ...Goals, Squat: e.target.value })}
+                                    value={Goals.Squat}
+                                />
+                            </Item>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <Item>
+                                <TextField
+                                    className=''
+                                    id="filled-basic"
+                                    label="Current DeadLift"
+                                    onChange={e => setCurrent({ ...curret, DeadLift: e.target.value })}
+                                    value={curret.DeadLift}
+                                />
+                            </Item>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <Item>
+                            <TextField
+                                    className=''
+                                    id="filled-basic"
+                                    label="Goal DeadLift"
+                                    onChange={e => setGoals({ ...Goals, DeadLift: e.target.value })}
+                                    value={Goals.DeadLift}
+                                />
+                            
+
+
+                            </Item>
+                        </Grid>
+                        <Button type='submit'>Submit</Button>
+                    </Grid>
                 </Box>
+                </form>
             </Modal>
         </Box>
 

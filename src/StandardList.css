@@ -1,5 +1,5 @@
 .Main{
-
+    height: 86vh;
     display: flex !important;
     width: auto;
     flex-direction: column;

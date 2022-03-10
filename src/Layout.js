@@ -3,6 +3,7 @@ import Navigation from "./Navigation";
 import { Routes, Route, Outlet , useNavigate} from "react-router-dom";
 import { useUserAuth } from "./UserAuthContext";
 import BottomNav from "./BottomNav";
+import "./Layout.css"
 
 
 const Layout = () => {

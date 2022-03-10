@@ -63,7 +63,7 @@ const Navigation = () => {
             <MenuItem onClick={handleClose}><span onClick={() => navigate('/Home/Blog')} >Blog</span></MenuItem>
           </Menu>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            News
+            QM_Workouts
           </Typography>
           <Button onClick={HandleLogout} color="inherit">Logout</Button>
         </Toolbar>
