@@ -1,0 +1,30 @@
+form{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 80vh;
+}
+.form-inner{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 90vw;
+    border: 4px solid lightgrey;
+    padding-bottom: 10vh;
+    padding-top: 5vh;
+    border-radius: 10px;
+}
+
+.LoginInput{
+    width: 70vw;
+    margin: 10px !important;
+}
+.Link{
+    margin-top: 3vh;
+
+}
+
+.SubmitButton{
+    width: 40vw;
+}

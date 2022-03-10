@@ -1,6 +1,7 @@
 .MainContent{
 
-    overflow: auto;
+    overflow: scroll;
+    height: 90vh;
     padding: 0px !important;
 }
 

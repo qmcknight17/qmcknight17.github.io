@@ -8,10 +8,14 @@ import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import { useUserAuth } from "./UserAuthContext";
+
 import {Route, useNavigate} from "react-router-dom";
 
 
+
 const Navigation = () => {
+  const { logOut } = useUserAuth();
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -21,6 +25,12 @@ const Navigation = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  function HandleLogout() {
+    handleClose();
+    logOut();
+
+}
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -51,12 +61,11 @@ const Navigation = () => {
             <MenuItem onClick={handleClose}><span onClick={()=> navigate('/Home/Active')}>Active Workout</span></MenuItem>
             <MenuItem onClick={handleClose}><span onClick={() => navigate('/Home/Goals')} >Goals</span></MenuItem>
             <MenuItem onClick={handleClose}><span onClick={() => navigate('/Home/Blog')} >Blog</span></MenuItem>
-            <MenuItem onClick={handleClose}>Logout</MenuItem>
           </Menu>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             News
           </Typography>
-          <Button color="inherit">Login</Button>
+          <Button onClick={HandleLogout} color="inherit">Logout</Button>
         </Toolbar>
       </AppBar>
     </Box>

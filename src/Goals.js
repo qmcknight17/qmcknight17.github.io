@@ -58,10 +58,17 @@ const Goals = () => {
     const usersGoalsCollectionRef = collection(db, "Users/User1/Goals");
     const usersTargetCollectionRef = collection(db, "Users/User1/Current");
 
+    const updateCurrent = async (Bench) => {
+        const userDoc = doc(db, "Users/User1/Goals/Goals1");
+        console.log(userDoc)
+        const newFields = { Bench: 235 + 1 };
+        await updateDoc(userDoc, newFields);
+    };
 
-    const updateUser = async (id, age) => {
-        const userDoc = doc(db, "users", id);
-        const newFields = { age: age + 1 };
+    const updateGoals = async (Bench) => {
+        const userDoc = doc(db, "Users/User1/Current/Current1");
+        console.log(userDoc)
+        const newFields = { Bench: 235 + 1 };
         await updateDoc(userDoc, newFields);
     };
 
@@ -74,8 +81,6 @@ const Goals = () => {
     const createUser = async () => {
         await addDoc(usersCollectionRef, { name: newName, age: Number(newAge) });
     };
-
-
 
     useEffect(() => {
         const getUsers = async () => {
@@ -94,37 +99,40 @@ const Goals = () => {
         getUsers();
     }, []);
 
-   
-    let displayWeight = Math.round(100 * Goals.BodyWeight/ curret.BodyWeight ) 
-    let displayBench = Math.round(100 *  curret.Bench / Goals.Bench) 
-    let displaySquat = Math.round(100 *  curret.Squat / Goals.Squat ) 
-    let displayDeadLift = Math.round(100 *  curret.DeadLift/ Goals.Deadlift ) 
 
 
+
+    let displayWeight = Math.round(100 * Goals.BodyWeight / curret.BodyWeight)
+    let displayBench = Math.round(100 * curret.Bench / Goals.Bench)
+    let displaySquat = Math.round(100 * curret.Squat / Goals.Squat)
+    let displayDeadLift = Math.round(100 * curret.DeadLift / Goals.Deadlift)
+
+  
     return (
         <Box sx={{ width: '100%' }}>
+            <h1>Welcome Back {(users[0]?? {Name : ''}).Name}</h1>
             <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
                 <Grid item xs={6}>
                     <Item>
-
+                        <h2>Body Weight</h2>
                         <CircularProgressbar value={displayWeight} text={`${displayWeight}%`} />
                     </Item>
                 </Grid>
                 <Grid item xs={6}>
                     <Item>
-
+                    <h2>Bench</h2>
                         <CircularProgressbar value={displayBench} text={`${displayBench}%`} />
                     </Item>
                 </Grid>
                 <Grid item xs={6}>
                     <Item>
-
+                    <h2>Squat</h2>
                         <CircularProgressbar value={displaySquat} text={`${displaySquat}%`} />
                     </Item>
                 </Grid>
                 <Grid item xs={6}>
                     <Item>
-
+                    <h2>Deadlift</h2>
                         <CircularProgressbar value={displayDeadLift} text={`${displayDeadLift}%`} />
                     </Item>
                 </Grid>
